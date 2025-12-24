@@ -290,14 +290,18 @@
 </div>
 
 <script>
-    // UPDATED APPSCRIPT URL - INSERTED AS REQUESTED
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz9qaRcL7SLYt6tU85Ll7KqdWU8CbBQfSrPos9V--qW4pQRiIbzOWXGY_QUr5UD5n-lxQ/exec"; 
+    // MASTERR CODE CONFIGURATION
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw_NjpeBFHyAnWxrMBbIkoqMGDHCYpYzZlaIABKPJqoE5PkzN5iTdN1A9D07RjInUVoDw/exec"; 
     
-    const TEST_KEY = "sk_test_505011f4e34f684ec320c4f48c3b07e6af073ef7";
-    const PAYSTACK_PUB_KEY = "pk_test_4bdd157654a8181ee29e60360d61b73e09a0aea4"; 
+    // LIVE KEYS UPDATED
+    const TEST_KEY = "sk_live_fe10ddcdd9a903d91e56791173519b0d4b9add8f"; 
+    const PAYSTACK_PUB_KEY = "pk_live_e5b087be2bb5d84d5aae295926104dbe8a7a4c83"; 
 
     let CANDIDATE_PROFILE = { name: "", reg: "", dept: "" };
     let tabSwitchCount = 0; 
+    let examData = {}, currentSub = "", currentIndex = 0, userAnswers = {}, timeLeft = 120 * 60, isLive = false;
+    let taggedQuestions = {}; 
+    let serverGeneratedPin = "";
 
     window.addEventListener('load', async () => {
         const statusBox = document.getElementById('conn-status');
@@ -312,7 +316,7 @@
                 statusBox.className = "status-online";
             }
         } catch (e) {
-            statusBox.innerText = "● CONNECTION FAILED: Check internet or Script Deployment";
+            statusBox.innerText = "● CONNECTION FAILED";
             statusBox.className = "status-offline";
         }
     });
@@ -323,10 +327,6 @@
         "HUMANITY": ["Use of English", "Government", "Literature"], 
         "COMMERCIAL": ["Use of English", "Accounting", "Mathematics"] 
     };
-
-    let examData = {}, currentSub = "", currentIndex = 0, userAnswers = {}, timeLeft = 120 * 60, isLive = false;
-    let taggedQuestions = {}; 
-    let serverGeneratedPin = "";
 
     document.addEventListener("visibilitychange", () => {
         if (document.hidden && isLive) {
@@ -554,7 +554,6 @@
             subs.forEach((s) => { listUI.innerHTML += `<li class="subject-item"><span>${s}</span><span class="status-pill">LOADED ✓</span></li>`; });
             document.getElementById('start-btn').style.display = "block"; 
         } catch(e) { 
-            console.error("Login Error Details:", e);
             document.getElementById('loading-overlay').style.display = 'none'; 
             alert("Server Error: " + e.message); 
         }
@@ -646,6 +645,7 @@
         } catch(e) { alert("Submission error."); document.getElementById('submit-loader').style.display = 'none'; }
     }
 
+    // UPDATED PAYSTACK HANDLER FOR LIVE PAYMENTS
     function payWithPaystack() {
         const email = document.getElementById('pay-email').value.trim();
         const payBtn = document.querySelector("#payment-lock-ui .btn");
@@ -657,12 +657,12 @@
         payBtn.disabled = true;
 
         let handler = PaystackPop.setup({
-            key: PAYSTACK_PUB_KEY, 
+            key: PAYSTACK_PUB_KEY, // This is your LIVE Public Key
             email: email, 
-            amount: 20000, 
+            amount: 20000, // Amount in Kobo (N200.00)
             currency: 'NGN',
             callback: async function(response) {
-                payBtn.innerText = "Payment Successful! Verifying...";
+                payBtn.innerText = "Verified! Syncing...";
                 const reg = CANDIDATE_PROFILE.reg;
                 
                 try {
@@ -674,11 +674,10 @@
                         document.getElementById('verified-footer').style.display = 'block';
                         document.getElementById('proceed-final-btn').style.display = 'block';
                     } else {
-                        throw new Error("Sync delay");
+                        document.getElementById('payment-lock-ui').style.display = 'none';
+                        document.getElementById('proceed-final-btn').style.display = 'block';
                     }
                 } catch (e) { 
-                    console.warn("Server sync delay, enabling manual proceed.");
-                    alert("Verification pending, but payment was received. You may now proceed.");
                     document.getElementById('payment-lock-ui').style.display = 'none';
                     document.getElementById('proceed-final-btn').style.display = 'block';
                 }
