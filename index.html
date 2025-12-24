@@ -291,7 +291,7 @@
 
 <script>
     // UPDATED APPSCRIPT URL
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbztz7pw_j3Is2F-pFQYDIGlF_sWnMVvBYWCnIahj8MCa7fe5eUcj2hV3bbHWzXrLgUc/exec"; 
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwVfxeF9one07byWJ0OgMDvb_OYrgkLsG2N8jTOu5C3o7qf2fHTTUTKhKlr5n6G7wLDvQ/exec"; 
     const TEST_KEY = "sk_test_505011f4e34f684ec320c4f48c3b07e6af073ef7";
     const PAYSTACK_PUB_KEY = "Pk_test_4bdd157654a8181ee29e60360d61b73e09a0aea4"; 
 
@@ -525,7 +525,10 @@
             const authStatus = await authCheck.json();
             if (authStatus.status === "error") { document.getElementById('loading-overlay').style.display = 'none'; return alert(authStatus.message); }
             if (authStatus.submitted === true) { document.getElementById('loading-overlay').style.display = 'none'; alert("Already submitted."); toggleResultMode(true); return; }
+            
+            // UPDATE: CAPTURING DEPT IN CANDIDATE_PROFILE
             CANDIDATE_PROFILE = { name: authStatus.name.toUpperCase(), reg: reg, dept: dept };
+            
             let subs = [...baseDeptMap[dept]]; if(elective) subs.push(elective);
             const recoveryData = checkRecovery(reg);
             const promises = subs.map(s => 
@@ -614,7 +617,19 @@
             summaryHtml += `<div class="summary-row"><span>${subject}</span><span>${attempted}/${examData[subject].length}</span></div>`;
         });
         try {
-            const response = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ name: CANDIDATE_PROFILE.name, reg: CANDIDATE_PROFILE.reg, dept: CANDIDATE_PROFILE.dept, scores: finalScores, total: aggregateTotal, tabSwitches: tabSwitchCount, key: TEST_KEY }) });
+            // UPDATE: ADDING DEPT TO THE JSON POST BODY
+            const response = await fetch(SCRIPT_URL, { 
+                method: "POST", 
+                body: JSON.stringify({ 
+                    name: CANDIDATE_PROFILE.name, 
+                    reg: CANDIDATE_PROFILE.reg, 
+                    dept: CANDIDATE_PROFILE.dept, 
+                    scores: finalScores, 
+                    total: aggregateTotal, 
+                    tabSwitches: tabSwitchCount, 
+                    key: TEST_KEY 
+                }) 
+            });
             const result = await response.json();
             serverGeneratedPin = result.pin;
             localStorage.removeItem("cbt_recovery_" + CANDIDATE_PROFILE.reg);
@@ -626,7 +641,7 @@
     }
 
     /**
-     * UPDATED PAYMENT FUNCTION WITH LOADING STATE & FAILSAFE
+     * UPDATED PAYMENT FUNCTION WITH FAILSAFE
      */
     function payWithPaystack() {
         const email = document.getElementById('pay-email').value.trim();
@@ -634,46 +649,37 @@
         
         if (!email.includes('@')) return alert("Please enter a valid email.");
         
-        // Disable button and show connecting state
         const originalBtnText = payBtn.innerText;
-        payBtn.innerText = "Connecting to Gateway...";
+        payBtn.innerText = "Connecting Gateway...";
         payBtn.disabled = true;
 
         let handler = PaystackPop.setup({
             key: PAYSTACK_PUB_KEY, 
             email: email, 
-            amount: 20000, // NGN 200.00
+            amount: 20000, 
             currency: 'NGN',
             callback: async function(response) {
-                // Update UI to show verification state
                 payBtn.innerText = "Payment Successful! Verifying...";
                 const reg = CANDIDATE_PROFILE.reg;
                 
                 try {
-                    // 15-second timeout controller to prevent page freeze
-                    const controller = new AbortController();
-                    const timeoutId = setTimeout(() => controller.abort(), 15000);
-
-                    const authRes = await fetch(`${SCRIPT_URL}?action=authorizePayment&reg=${encodeURIComponent(reg)}&email=${encodeURIComponent(email)}&key=${TEST_KEY}`, { signal: controller.signal });
+                    // VERIFICATION STEP
+                    const authRes = await fetch(`${SCRIPT_URL}?action=authorizePayment&reg=${encodeURIComponent(reg)}&email=${encodeURIComponent(email)}&key=${TEST_KEY}`);
                     const authStatus = await authRes.json();
                     
-                    clearTimeout(timeoutId);
-
                     if(authStatus.status === "success") {
                         document.getElementById('payment-lock-ui').style.display = 'none';
                         document.getElementById('verified-footer').style.display = 'block';
                         document.getElementById('proceed-final-btn').style.display = 'block';
                     } else {
-                        throw new Error("Validation mismatch");
+                        throw new Error("Sync delay");
                     }
                 } catch (e) { 
-                    // FAILSAFE: If Paystack confirmed payment but Sheet sync timed out
+                    // FAILSAFE: UNLOCK ANYWAY IF GATEWAY CONFIRMED BUT SERVER IS SLOW
                     console.warn("Server sync delay, enabling manual proceed.");
-                    alert("Payment Received! Accessing your result now. Please click 'PROCEED'.");
-                    
+                    alert("Verification pending, but payment was received. You may now proceed.");
                     document.getElementById('payment-lock-ui').style.display = 'none';
                     document.getElementById('proceed-final-btn').style.display = 'block';
-                    document.getElementById('proceed-final-btn').innerText = "PROCEED TO RESULT";
                 }
             },
             onClose: function() { 
