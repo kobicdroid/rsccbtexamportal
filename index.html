@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RUBY SPRINGFIELD COLLEGE - CBT PORTAL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     <script src="https://js.paystack.co/v1/inline.js"></script>
@@ -18,29 +19,12 @@
         body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background: var(--bg); color: var(--text); user-select: none; overflow-x: hidden; }
 
         .sumi-brand-footer {
-            position: fixed;
-            bottom: 20px;
-            right: 25px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: 50px;
-            font-size: 11px;
-            color: #555;
-            z-index: 999999;
-            pointer-events: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            font-family: 'Segoe UI', sans-serif;
+            position: fixed; bottom: 20px; right: 25px; display: flex; align-items: center; gap: 6px; padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(8px); border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50px; font-size: 11px; color: #555; z-index: 999999; pointer-events: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); font-family: 'Segoe UI', sans-serif;
         }
-        .sumi-brand-footer strong {
-            color: var(--primary);
-            font-weight: 800;
-            font-size: 13px;
-        }
+        .sumi-brand-footer strong { color: var(--primary); font-weight: 800; font-size: 13px; }
 
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes pulse { 0% { opacity: 0.8; } 50% { opacity: 1; } 100% { opacity: 0.8; } }
@@ -110,7 +94,6 @@
         .finish-logo { width: 100px; height: 100px; background: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; animation: scaleCheck 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .finish-logo::after { content: '✓'; color: white; font-size: 60px; font-weight: bold; }
 
-        /* Payment Update UI */
         #payment-lock-ui { margin-top: 20px; padding: 15px; background: #fff3e0; border: 1px solid #ffe0b2; border-radius: 8px; }
     </style>
 </head>
@@ -126,11 +109,9 @@
         <span class="help-close" onclick="closeHelp()">&times;</span>
         <h3 style="color: var(--primary); margin-top: 0;">Exam Navigation Guide</h3>
         <p style="font-size: 0.9rem; color: #666;">Use the following legend to track your progress:</p>
-        
         <div class="legend-item"><div class="dot" style="background: var(--success);"></div> <span><b>Green:</b> Question Answered & Saved</span></div>
         <div class="legend-item"><div class="dot" style="background: var(--tag-color);"></div> <span><b>Orange:</b> Question Tagged / Skipped</span></div>
         <div class="legend-item"><div class="dot" style="background: white; border: 1px solid #ccc;"></div> <span><b>White:</b> Question Not Yet Visited</span></div>
-        
         <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
         <ul style="font-size: 0.85rem; padding-left: 20px; line-height: 1.6;">
             <li>Click <b>SAVE & NEXT</b> to move to the next question.</li>
@@ -170,14 +151,16 @@
         <div id="auth-fields">
             <input type="text" id="cand-name" placeholder="Full Name (Surname First)">
             <input type="text" id="cand-reg" placeholder="Registration Number">
-            <select id="cand-dept" onchange="toggleElectives()">
+            
+            <select id="cand-dept" onchange="toggleElectives()" style="display: block !important;">
                 <option value="">-- Select Department --</option>
                 <option value="SCIENCE HEALTH">SCIENCE (HEALTH)</option>
                 <option value="SCIENCE ENGINEERING">SCIENCE (ENGINEERING)</option>
                 <option value="HUMANITY">HUMANITY</option>
                 <option value="COMMERCIAL">COMMERCIAL</option>
             </select>
-            <div id="elective-box" style="display:none;">
+            
+            <div id="elective-box" style="display:none; margin-top: 10px;">
                 <label id="elective-label" style="font-size: 0.8rem; color: var(--primary); font-weight: bold; display: block; text-align: left; margin-top: 5px;">Choose your 4th Subject:</label>
                 <select id="cand-elective"></select>
             </div>
@@ -271,14 +254,12 @@
             <img src="https://cdn-icons-png.flaticon.com/512/190/190411.png" width="60">
         </div>
         <h2 style="color:var(--success); text-align:center; margin-top:0;">EXAMINATION COMPLETED</h2>
-        <p style="text-align:center; color:#555;">The system has successfully captured your response. Your attempt summary is as follows:</p>
+        <p style="text-align:center; color:#555;">The system has captured your response. Your attempt summary is as follows:</p>
         
         <div id="attempt-summary" style="margin-top:25px; border-top: 2px solid #eee;"></div>
         
         <div id="payment-lock-ui">
-            <p style="margin: 0 0 10px 0; font-size: 0.85rem; color: #e65100; font-weight: bold;">
-                ⚠️ PAYMENT REQUIRED FOR RESULT RELEASE
-            </p>
+            <p style="margin: 0 0 10px 0; font-size: 0.85rem; color: #e65100; font-weight: bold;">⚠️ PAYMENT REQUIRED FOR RESULT RELEASE</p>
             <input type="email" id="pay-email" placeholder="Enter Email for Receipt Delivery" style="margin-bottom:10px; border: 1px solid #ff9800;">
             <p style="font-size: 0.75rem; color: #666; margin-bottom: 10px;">A processing fee of <strong>₦200</strong> is required to unlock your access PIN and Result Slip.</p>
             <button class="btn" style="background: var(--tag-color); color: white; width: 100%;" onclick="payWithPaystack()">PAY & UNLOCK RESULT</button>
@@ -303,19 +284,16 @@
     <div id="auth-status-msg" style="width:90%; max-width:400px; margin-bottom: 20px;"></div>
 
     <div style="display:flex; gap:10px; flex-direction:column; align-items:center;">
-        <button id="print-btn" class="btn" style="background: var(--success); color: white; width: 250px;" onclick="checkAuthorizationAndPrint()">
-            🖨️ CHECK & PRINT RESULT
-        </button>
+        <button id="print-btn" class="btn" style="background: var(--success); color: white; width: 250px;" onclick="checkAuthorizationAndPrint()">🖨️ CHECK & PRINT RESULT</button>
         <button class="btn" style="background: #333; color: white; width: 250px;" onclick="handleLogout()">LOGOUT</button>
     </div>
 </div>
 
 <script>
-    // UPDATED SCRIPT URL
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPDnMTdagXbjGwO6VrIrVKL4NDrhIFI1-TyG84sS-t9e9MAiSeYqesBspeVDwvphLCGg/exec"; 
-    
+    // UPDATED APPSCRIPT URL
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLgb1YHrbet_Cb0msO6B_LyD4d2W7Cx8rGlr6QwcOZfcQKK5MQxv68RHj5Sfu3TMFVZw/exec"; 
     const TEST_KEY = "sk_test_505011f4e34f684ec320c4f48c3b07e6af073ef7";
-    const PAYSTACK_PUB_KEY = "pk_live_e5b087be2bb5d84d5aae295926104dbe8a7a4c83"; 
+    const PAYSTACK_PUB_KEY = "Pk_test_4bdd157654a8181ee29e60360d61b73e09a0aea4"; 
 
     let CANDIDATE_PROFILE = { name: "", reg: "", dept: "" };
     let tabSwitchCount = 0; 
@@ -325,7 +303,6 @@
         statusBox.style.display = "block";
         statusBox.innerText = "● PINGING SERVER...";
         statusBox.className = "status-checking";
-
         try {
             const res = await fetch(`${SCRIPT_URL}?action=verify&reg=PING&key=${TEST_KEY}&t=${Date.now()}`);
             const data = await res.json();
@@ -348,25 +325,23 @@
 
     let examData = {}, currentSub = "", currentIndex = 0, userAnswers = {}, timeLeft = 120 * 60, isLive = false;
     let taggedQuestions = {}; 
-    let candDept = ""; 
     let serverGeneratedPin = "";
 
     document.addEventListener("visibilitychange", () => {
         if (document.hidden && isLive) {
             tabSwitchCount++;
-            alert(`SECURITY WARNING #${tabSwitchCount}: Please do not leave the exam screen. This incident is being logged.`);
+            alert(`SECURITY WARNING #${tabSwitchCount}: Please do not leave the exam screen.`);
             if(tabSwitchCount >= 3) {
-                alert("CRITICAL VIOLATION: Excessive tab switching detected. Automatic submission triggered.");
+                alert("CRITICAL VIOLATION: Excessive tab switching detected. Submitting.");
                 submitFinal();
             }
         }
     });
 
     function handleLogout() {
-        if (confirm("Are you sure you want to logout? The session will be cleared.")) {
+        if (confirm("Are you sure you want to logout?")) {
             const reg = document.getElementById('cand-reg').value.trim().toUpperCase();
             if(reg) localStorage.removeItem("cbt_recovery_" + reg);
-            tabSwitchCount = 0; 
             window.location.reload();
         }
     }
@@ -375,28 +350,21 @@
         const authFields = document.getElementById('auth-fields');
         const resultFields = document.getElementById('result-fields');
         const title = document.getElementById('portal-title');
-
         if (isResult) {
-            authFields.style.display = 'none';
-            resultFields.style.display = 'block';
-            title.innerText = "RESULT CHECKING PORTAL";
-            title.style.color = "var(--success)";
+            authFields.style.display = 'none'; resultFields.style.display = 'block';
+            title.innerText = "RESULT CHECKING PORTAL"; title.style.color = "var(--success)";
         } else {
-            authFields.style.display = 'block';
-            resultFields.style.display = 'none';
-            title.innerText = "OFFICIAL CBT EXAM PORTAL";
-            title.style.color = "#777";
+            authFields.style.display = 'block'; resultFields.style.display = 'none';
+            title.innerText = "OFFICIAL CBT EXAM PORTAL"; title.style.color = "#777";
         }
     }
 
     function directToResult() {
         const reg = document.getElementById('check-reg').value.trim();
         const pin = document.getElementById('check-pin').value.trim();
-        if (!reg || !pin) return alert("Please enter both Registration Number and PIN");
-        
+        if (!reg || !pin) return alert("Enter Reg Number and PIN");
         serverGeneratedPin = pin; 
         CANDIDATE_PROFILE.reg = reg.toUpperCase();
-
         document.getElementById('final-cand-name').innerText = "Verifying Credentials...";
         document.getElementById('final-cand-reg').innerText = CANDIDATE_PROFILE.reg;
         document.getElementById('login-page').style.display = 'none';
@@ -409,129 +377,117 @@
         const pin = serverGeneratedPin; 
         const btn = document.getElementById('print-btn');
         const msg = document.getElementById('auth-status-msg');
-        btn.innerText = "Verifying Authorization...";
-        btn.disabled = true;
-
+        btn.innerText = "Verifying Authorization..."; btn.disabled = true;
         try {
             const response = await fetch(`${SCRIPT_URL}?action=checkAuth&reg=${encodeURIComponent(reg)}&pin=${encodeURIComponent(pin)}&key=${TEST_KEY}&t=${Date.now()}`);
             const result = await response.json();
-            
             if (result.status === "Authorized") {
-                msg.innerHTML = `<span style="color:var(--success)">Authorized! Generating PDF...</span>`;
+                msg.innerHTML = `<span style="color:var(--success)">Authorized! Opening Result Tab...</span>`;
+                
+                // FIXED: Temporarily hide final page to ensure new tab focus
+                document.getElementById('final-page').style.display = 'none';
                 
                 CANDIDATE_PROFILE.name = result.data.name;
-                CANDIDATE_PROFILE.reg = result.data.reg;
-                document.getElementById('final-cand-name').innerText = CANDIDATE_PROFILE.name;
+                document.getElementById('final-cand-name').innerText = result.data.name;
+                let cleanScores = (typeof result.data.scores === 'string') ? JSON.parse(result.data.scores) : result.data.scores;
                 
-                let cleanScores = result.data.scores;
-                if (typeof cleanScores === 'string') {
-                    try { cleanScores = JSON.parse(cleanScores); } catch(e) { cleanScores = {}; }
-                }
-                
-                generateProfessionalPDF({
-                    name: result.data.name,
-                    reg: result.data.reg,
-                    dept: result.data.dept,
-                    scores: cleanScores,
-                    total: result.data.total
+                // TRIGGER NEW TAB
+                generateProfessionalResultSlip({ 
+                    name: result.data.name, 
+                    reg: result.data.reg, 
+                    dept: result.data.dept, 
+                    scores: cleanScores, 
+                    total: result.data.total 
                 });
-                
-                btn.innerText = "RE-PRINT RESULT SLIP";
+
+                // Restore portal view after a delay
+                setTimeout(() => {
+                    document.getElementById('final-page').style.display = 'flex';
+                    btn.innerText = "RE-PRINT RESULT SLIP";
+                }, 2000);
+
             } else if (result.status === "WrongPIN") {
-                msg.innerHTML = `<span style="color:var(--danger)">ERROR: Incorrect Security PIN. Access Denied.</span>`;
-                btn.innerText = "RE-TRY ACCESS";
+                msg.innerHTML = `<span style="color:var(--danger)">ERROR: Incorrect Security PIN.</span>`;
             } else if (result.status === "Unauthorized") {
-                msg.innerHTML = `<span style="color:var(--tag-color)">NOTICE: Your result has not been authorized for release yet.</span>`;
-                btn.innerText = "RE-CHECK STATUS";
-            } else {
-                msg.innerHTML = `<span style="color:var(--danger)">Registration record not found.</span>`;
-                btn.innerText = "CHECK & PRINT RESULT";
-            }
-        } catch (e) {
-            msg.innerText = "Connection Error. Check internet or deployment.";
-        } finally {
-            btn.disabled = false;
-        }
+                msg.innerHTML = `<span style="color:var(--tag-color)">NOTICE: Your result has not been authorized yet.</span>`;
+            } else { msg.innerHTML = `<span>Record not found.</span>`; }
+        } catch (e) { msg.innerText = "Connection Error."; } finally { btn.disabled = false; }
     }
 
-    function generateProfessionalPDF(studentData) {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        const pageWidth = doc.internal.pageSize.getWidth();
+    function generateProfessionalResultSlip(data) {
+        let scoreRows = "";
+        for (let subject in data.scores) {
+            scoreRows += `<tr><td>${subject.toUpperCase()}</td><td>${data.scores[subject]}</td></tr>`;
+        }
 
-        doc.setFillColor(0, 51, 102); 
-        doc.rect(5, 5, pageWidth - 10, 45, 'F');
+        // FIXED: Using '_blank' without specific window features forces a NEW TAB instead of a popup
+        const printWindow = window.open('', '_blank');
         
-        doc.setTextColor(230, 230, 230);
-        doc.setFontSize(50);
-        doc.setFont("helvetica", "bold");
-        doc.text(studentData.dept.toUpperCase(), pageWidth / 2, 160, { align: "center", angle: 45, opacity: 0.1 });
-
-        doc.setTextColor(255, 255, 255);
-        doc.setFontSize(24);
-        doc.setFont("helvetica", "bold");
-        doc.text("RUBY SPRINGFIELD COLLEGE", pageWidth / 2, 25, { align: "center" });
-        doc.setFontSize(10);
-        doc.setFont("helvetica", "normal");
-        doc.text("OFFICIAL COMPUTER BASED TEST (CBT) RESULT SLIP", pageWidth / 2, 38, { align: "center" });
-
-        doc.setTextColor(40, 40, 40);
-        doc.setFontSize(11);
-        doc.setFont("helvetica", "bold");
-        doc.text("CANDIDATE PROFILE", 15, 65);
-        doc.setLineWidth(0.5);
-        doc.line(15, 67, 70, 67);
-
-        doc.setFont("helvetica", "normal");
-        doc.text(`FULL NAME:`, 15, 78);
-        doc.setFont("helvetica", "bold");
-        doc.text(`${studentData.name.toUpperCase()}`, 60, 78);
-        
-        doc.setFont("helvetica", "normal");
-        doc.text(`REGISTRATION NO:`, 15, 86);
-        doc.setFont("helvetica", "bold");
-        doc.text(`${studentData.reg}`, 60, 86);
-
-        doc.setFont("helvetica", "normal");
-        doc.text(`DEPARTMENT:`, 15, 94);
-        doc.setFont("helvetica", "bold");
-        doc.text(`${studentData.dept.toUpperCase()}`, 60, 94);
-
-        doc.setFont("helvetica", "normal");
-        doc.text(`DATE ISSUED:`, 140, 78);
-        doc.text(`${new Date().toLocaleDateString()}`, 175, 78);
-
-        const tableBody = Object.entries(studentData.scores).map(([sub, score]) => [
-            sub.toUpperCase(), 
-            score,
-            score >= 50 ? "PASS" : "RE-SIT"
-        ]);
-
-        doc.autoTable({
-            startY: 105,
-            head: [['SUBJECT TITLE', 'SCORE', 'REMARK']],
-            body: tableBody,
-            theme: 'grid',
-            headStyles: { fillColor: [0, 51, 102], textColor: [255, 255, 255], fontStyle: 'bold' },
-            styles: { fontSize: 10, cellPadding: 5 },
-            columnStyles: { 1: { halign: 'center' }, 2: { halign: 'center' } },
-            foot: [[
-                { content: 'AGGREGATE TOTAL', colSpan: 1, styles: { fontStyle: 'bold' } },
-                { content: studentData.total, styles: { fontStyle: 'bold', halign: 'center' } },
-                { content: 'STATUS: CERTIFIED', styles: { fontStyle: 'bold', halign: 'center' } }
-            ]],
-            footStyles: { fillColor: [240, 240, 240], textColor: [0, 0, 0] }
-        });
-
-        const finalY = doc.lastAutoTable.finalY + 30;
-        doc.setDrawColor(0, 0, 0);
-        doc.line(20, finalY, 70, finalY);
-        doc.text("School Stamp", 35, finalY + 5);
-        
-        doc.line(140, finalY, 190, finalY);
-        doc.text("Registrar Signature", 145, finalY + 5);
-
-        doc.save(`Result_${studentData.reg}.pdf`);
+        printWindow.document.write(`
+            <html>
+            <head>
+                <title>Result Slip - ${data.name}</title>
+                <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+                <style>
+                    body { font-family: 'Segoe UI', sans-serif; padding: 40px; color: #333; position: relative; }
+                    .watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 80px; color: rgba(0, 51, 102, 0.05); white-space: nowrap; pointer-events: none; z-index: -1; font-weight: bold; text-align: center; }
+                    .border-wrapper { border: 5px double #003366; padding: 30px; position: relative; min-height: 850px; background: white; z-index: 1; }
+                    .header { text-align: center; border-bottom: 2px solid #003366; padding-bottom: 10px; margin-bottom: 20px; }
+                    .header h1 { margin: 0; color: #003366; font-size: 32px; }
+                    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+                    th { background: #003366; color: white; padding: 12px; text-align: left; }
+                    td { padding: 12px; border-bottom: 1px solid #ddd; }
+                    .total-row { font-weight: bold; background: #f2f2f2; font-size: 18px; }
+                    .validation-area { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 100px; }
+                    .sig-text { font-family: 'Dancing Script', cursive; font-size: 32px; color: #1a1a1a; margin-bottom: -5px; }
+                    .sig-line { border-top: 1px solid #333; width: 220px; text-align: center; padding-top: 5px; font-weight: bold; font-size: 14px; }
+                    .stamp-box { border: 3px solid #cc0000; color: #cc0000; padding: 10px 20px; font-weight: bold; transform: rotate(-12deg); border-radius: 10px; font-size: 14px; text-align: center; opacity: 0.9; }
+                    @media print { .no-print { display: none; } body { -webkit-print-color-adjust: exact; } }
+                </style>
+            </head>
+            <body onload="window.focus();">
+                <div class="border-wrapper">
+                    <div class="watermark">RUBY SPRINGFIELD<br>COLLEGE</div>
+                    <div class="header">
+                        <h1>RUBY SPRINGFIELD COLLEGE</h1>
+                        <p>123 School Avenue, City Center | Tel: +234 000 000 0000</p>
+                        <h3>OFFICIAL CBT ENTRANCE RESULT SLIP</h3>
+                    </div>
+                    <div style="margin-bottom: 30px;">
+                        <p><b>STUDENT NAME:</b> ${data.name}</p>
+                        <p><b>REGISTRATION NO:</b> ${data.reg}</p>
+                        <p><b>DEPARTMENT:</b> ${data.dept}</p>
+                        <p><b>DATE OF ISSUE:</b> ${new Date().toDateString()}</p>
+                    </div>
+                    <table>
+                        <thead><tr><th>SUBJECT</th><th>SCORE (100)</th></tr></thead>
+                        <tbody>
+                            ${scoreRows}
+                            <tr class="total-row"><td>AGGREGATE TOTAL</td><td>${data.total} / 400</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="validation-area">
+                        <div class="stamp-box">
+                            <div style="font-size: 9px; border-bottom: 1px solid #cc0000; margin-bottom: 4px;">VERIFIED SYSTEM LOG</div>
+                            MANAGEMENT APPROVES
+                            <div style="font-size: 10px; margin-top: 4px;">DATE: ${new Date().toLocaleDateString()}</div>
+                        </div>
+                        <div style="text-align:center;">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=${data.reg}" alt="QR">
+                            <p style="font-size:9px; margin:0;">SCAN TO VERIFY</p>
+                        </div>
+                        <div class="signature-box">
+                            <div class="sig-text">SumiLogics</div>
+                            <div class="sig-line">Registrar's Signature</div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <button class="no-print" onclick="window.print()" style="padding:15px 30px; background:#003366; color:white; border:none; border-radius:5px; cursor:pointer; font-weight:bold; font-size:16px;">🖨️ PRINT OFFICIAL SLIP</button>
+            </body>
+            </html>
+        `);
+        printWindow.document.close();
     }
 
     function saveProgress() {
@@ -556,13 +512,16 @@
         const dept = document.getElementById('cand-dept').value;
         const box = document.getElementById('elective-box');
         const sel = document.getElementById('cand-elective');
+        sel.innerHTML = "";
         if(dept === "HUMANITY") { 
             box.style.display = 'block'; 
             sel.innerHTML = '<option value="">-- Select 4th Subject --</option><option value="IRK">IRK</option><option value="CRS">CRS</option><option value="Economics">Economics</option>'; 
         } else if(dept === "COMMERCIAL") { 
             box.style.display = 'block'; 
             sel.innerHTML = '<option value="">-- Select 4th Subject --</option><option value="Commerce">Commerce</option><option value="History">History</option>'; 
-        } else { box.style.display = 'none'; }
+        } else { 
+            box.style.display = 'none'; 
+        }
     }
 
     async function handleLogin() {
@@ -570,112 +529,51 @@
         const reg = document.getElementById('cand-reg').value.trim().toUpperCase();
         const dept = document.getElementById('cand-dept').value;
         const elective = document.getElementById('cand-elective').value;
-        
         if(!nameInput || !reg || !dept) return alert("Please enter all details");
-        candDept = dept; 
-
         document.getElementById('loading-overlay').style.display = 'flex';
-        document.getElementById('load-subjects-top').innerText = "Authenticating Registration...";
-
         try {
             const authCheck = await fetch(`${SCRIPT_URL}?action=verify&reg=${encodeURIComponent(reg)}&key=${TEST_KEY}&t=${Date.now()}`);
             const authStatus = await authCheck.json();
-            
-            if (authStatus.status === "error") {
-                document.getElementById('loading-overlay').style.display = 'none';
-                return alert("ACCESS DENIED: " + authStatus.message);
-            }
-
-            if (authStatus.submitted === true) {
-                document.getElementById('loading-overlay').style.display = 'none';
-                alert("ACCESS DENIED: You have already completed this examination.");
-                toggleResultMode(true);
-                document.getElementById('check-reg').value = reg;
-                return;
-            }
-
-            CANDIDATE_PROFILE.name = authStatus.name.toUpperCase();
-            CANDIDATE_PROFILE.reg = reg;
-            CANDIDATE_PROFILE.dept = dept;
-
-            let subs = [...baseDeptMap[dept]];
-            if(elective && elective !== "") subs.push(elective);
-
+            if (authStatus.status === "error") { document.getElementById('loading-overlay').style.display = 'none'; return alert(authStatus.message); }
+            if (authStatus.submitted === true) { document.getElementById('loading-overlay').style.display = 'none'; alert("Already submitted."); toggleResultMode(true); return; }
+            CANDIDATE_PROFILE = { name: authStatus.name.toUpperCase(), reg: reg, dept: dept };
+            let subs = [...baseDeptMap[dept]]; if(elective) subs.push(elective);
             const recoveryData = checkRecovery(reg);
-            examData = {}; 
-
             const promises = subs.map(s => 
                 fetch(`${SCRIPT_URL}?subject=${encodeURIComponent(s.trim())}&key=${TEST_KEY}`)
-                .then(res => res.json())
-                .then(data => {
+                .then(res => res.json()).then(data => {
                     examData[s] = recoveryData ? data : shuffle([...data]);
                     userAnswers[s] = recoveryData ? (recoveryData.userAnswers[s] || new Array(examData[s].length).fill(null)) : new Array(examData[s].length).fill(null);
                     taggedQuestions[s] = recoveryData ? (recoveryData.taggedQuestions[s] || new Array(examData[s].length).fill(false)) : new Array(examData[s].length).fill(false);
                 })
             );
-
             await Promise.all(promises);
-            if(recoveryData) { 
-                timeLeft = recoveryData.timeLeft; 
-                currentSub = recoveryData.currentSub; 
-                currentIndex = recoveryData.currentIndex;
-                tabSwitchCount = recoveryData.tabSwitches || 0;
-            }
-
+            if(recoveryData) { timeLeft = recoveryData.timeLeft; currentSub = recoveryData.currentSub; currentIndex = recoveryData.currentIndex; tabSwitchCount = recoveryData.tabSwitches || 0; }
             document.getElementById('instr-name').innerText = CANDIDATE_PROFILE.name;
             document.getElementById('instr-reg').innerText = CANDIDATE_PROFILE.reg;
             document.getElementById('disp-name').innerText = CANDIDATE_PROFILE.name;
-
             document.getElementById('loading-overlay').style.display = 'none';
             document.getElementById('login-page').style.display = 'none';
             document.getElementById('instructions-page').style.display = 'flex';
-            
-            const listUI = document.getElementById('subject-list-ui');
-            listUI.innerHTML = "";
-            subs.forEach((s) => {
-                const item = document.createElement('li'); item.className = 'subject-item';
-                item.innerHTML = `<span>${s}</span><span class="status-pill">LOADED ✓</span>`;
-                listUI.appendChild(item);
-            });
+            const listUI = document.getElementById('subject-list-ui'); listUI.innerHTML = "";
+            subs.forEach((s) => { listUI.innerHTML += `<li class="subject-item"><span>${s}</span><span class="status-pill">LOADED ✓</span></li>`; });
             document.getElementById('start-btn').style.display = "block"; 
-
-        } catch(e) { 
-            console.error(e);
-            document.getElementById('loading-overlay').style.display = 'none';
-            alert("CONNECTION ERROR: The server did not respond.");
-        }
+        } catch(e) { document.getElementById('loading-overlay').style.display = 'none'; alert("Server Error."); }
     }
 
     function startExam() { 
-        isLive = true; 
-        document.getElementById('instructions-page').style.display = 'none'; 
-        document.getElementById('exam-page').style.display = 'flex'; 
-        document.getElementById('fab-help').style.display = 'block'; 
-        const tabs = document.getElementById('sub-tabs');
-        tabs.innerHTML = "";
-        Object.keys(examData).forEach(s => {
-            const t = document.createElement('div'); t.innerText = s;
-            t.style.padding = "12px 20px"; t.style.cursor = "pointer"; t.style.fontWeight = "bold";
-            t.onclick = () => switchSub(s); tabs.appendChild(t);
-        });
-        if(!currentSub) currentSub = Object.keys(examData)[0];
-        switchSub(currentSub); 
-        startTimer(); 
+        isLive = true; document.getElementById('instructions-page').style.display = 'none'; document.getElementById('exam-page').style.display = 'flex'; document.getElementById('fab-help').style.display = 'block'; 
+        const tabs = document.getElementById('sub-tabs'); tabs.innerHTML = "";
+        Object.keys(examData).forEach(s => { const t = document.createElement('div'); t.innerText = s; t.style.padding = "12px 20px"; t.style.cursor = "pointer"; t.onclick = () => switchSub(s); tabs.appendChild(t); });
+        if(!currentSub) currentSub = Object.keys(examData)[0]; switchSub(currentSub); startTimer(); 
     }
 
-    function switchSub(s) { 
-        currentSub = s; currentIndex = 0; 
-        document.querySelectorAll('#sub-tabs div').forEach(t => t.style.borderBottom = (t.innerText === s) ? "3px solid var(--primary)" : "none");
-        loadQ(); renderGrid(); 
-    }
+    function switchSub(s) { currentSub = s; currentIndex = 0; document.querySelectorAll('#sub-tabs div').forEach(t => t.style.borderBottom = (t.innerText === s) ? "3px solid var(--primary)" : "none"); loadQ(); renderGrid(); }
 
     function loadQ() {
-        const q = examData[currentSub][currentIndex]; 
-        const passageBox = document.getElementById('passage-box');
-        if (q.passage && q.passage.trim() !== "") {
-            passageBox.innerHTML = `<strong>PASSAGE:</strong><br>${q.passage}`;
-            passageBox.style.display = 'block';
-        } else { passageBox.style.display = 'none'; }
+        const q = examData[currentSub][currentIndex];
+        document.getElementById('passage-box').innerHTML = (q.passage) ? `<strong>PASSAGE:</strong><br>${q.passage}` : "";
+        document.getElementById('passage-box').style.display = (q.passage) ? "block" : "none";
         document.getElementById('q-text').innerText = `(${currentIndex + 1}) ${q.q}`;
         const box = document.getElementById('options-box'); box.innerHTML = '';
         ['a','b','c','d'].forEach(opt => {
@@ -691,7 +589,7 @@
     function renderGrid() {
         const g = document.getElementById('q-grid'); g.innerHTML = '';
         examData[currentSub].forEach((_, i) => {
-            const b = document.createElement('div'); b.style.width="30px"; b.style.height="30px"; b.style.display="flex"; b.style.alignItems="center"; b.style.justifyContent="center"; b.style.cursor="pointer"; b.style.border="1px solid #ccc";
+            const b = document.createElement('div'); b.className = 'dot'; b.style.width="30px"; b.style.height="30px"; b.style.display="flex"; b.style.alignItems="center"; b.style.justifyContent="center"; b.style.cursor="pointer";
             if (taggedQuestions[currentSub][i]) { b.style.background = "var(--tag-color)"; b.style.color = "white"; }
             else if (userAnswers[currentSub][i]) { b.style.background = "var(--success)"; b.style.color = "white"; }
             else { b.style.background = "white"; }
@@ -706,8 +604,7 @@
     function startTimer() { 
         setInterval(() => { 
             if(!isLive || timeLeft <= 0) return; 
-            timeLeft--; 
-            if(timeLeft % 10 === 0) saveProgress(); 
+            timeLeft--; if(timeLeft % 10 === 0) saveProgress(); 
             let h = Math.floor(timeLeft / 3600), m = Math.floor((timeLeft % 3600) / 60), s = timeLeft % 60;
             document.getElementById('timer').innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
             if(timeLeft === 0) submitFinal();
@@ -715,11 +612,8 @@
     }
 
     async function submitFinal() {
-        isLive = false;
-        document.getElementById('confirm-modal').style.display = 'none';
-        document.getElementById('submit-loader').style.display = 'flex';
+        isLive = false; document.getElementById('confirm-modal').style.display = 'none'; document.getElementById('submit-loader').style.display = 'flex';
         let finalScores = {}, aggregateTotal = 0, summaryHtml = "<h4>ATTEMPT SUMMARY:</h4>";
-        
         Object.keys(examData).forEach(subject => {
             let correct = 0, attempted = 0;
             examData[subject].forEach((q, idx) => {
@@ -727,60 +621,39 @@
                 if (userAnswers[subject][idx] === (q.ans||"").toString().trim().toUpperCase()) correct++;
             });
             let scaled = Math.round((correct / examData[subject].length) * 100);
-            finalScores[subject] = scaled; 
-            aggregateTotal += scaled;
+            finalScores[subject] = scaled; aggregateTotal += scaled;
             summaryHtml += `<div class="summary-row"><span>${subject}</span><span>${attempted}/${examData[subject].length}</span></div>`;
         });
-
-        const payload = {
-            name: CANDIDATE_PROFILE.name,
-            reg: CANDIDATE_PROFILE.reg, 
-            dept: CANDIDATE_PROFILE.dept, 
-            scores: finalScores, 
-            total: aggregateTotal,
-            tabSwitches: tabSwitchCount,
-            key: TEST_KEY
-        };
-
         try {
-            const response = await fetch(SCRIPT_URL, { 
-                method: "POST", 
-                body: JSON.stringify(payload) 
-            });
-            
+            const response = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ name: CANDIDATE_PROFILE.name, reg: CANDIDATE_PROFILE.reg, dept: CANDIDATE_PROFILE.dept, scores: finalScores, total: aggregateTotal, tabSwitches: tabSwitchCount, key: TEST_KEY }) });
             const result = await response.json();
             serverGeneratedPin = result.pin;
-
             localStorage.removeItem("cbt_recovery_" + CANDIDATE_PROFILE.reg);
             document.getElementById('submit-loader').style.display = 'none';
             document.getElementById('exam-page').style.display = 'none';
             document.getElementById('result-page').style.display = 'flex';
             document.getElementById('attempt-summary').innerHTML = summaryHtml;
-        } catch(e) { 
-            alert("SUBMISSION ERROR. Please inform the supervisor."); 
-            document.getElementById('submit-loader').style.display = 'none';
-        }
+        } catch(e) { alert("Submission error."); document.getElementById('submit-loader').style.display = 'none'; }
     }
 
     function payWithPaystack() {
         const email = document.getElementById('pay-email').value.trim();
-        if (!email || !email.includes('@')) return alert("Please enter a valid email to receive your PIN and receipt.");
-
+        if (!email.includes('@')) return alert("Please enter a valid email.");
         let handler = PaystackPop.setup({
-            key: PAYSTACK_PUB_KEY,
-            email: email,
-            amount: 20000, 
-            currency: 'NGN',
-            ref: 'CBT_' + CANDIDATE_PROFILE.reg + '_' + Math.floor((Math.random() * 1000000000) + 1),
-            callback: function(response) {
-                alert('Payment successful! Reference: ' + response.reference);
-                document.getElementById('payment-lock-ui').style.display = 'none';
-                document.getElementById('verified-footer').style.display = 'block';
-                document.getElementById('proceed-final-btn').style.display = 'block';
+            key: PAYSTACK_PUB_KEY, email: email, amount: 20000, currency: 'NGN',
+            callback: async function(response) {
+                const reg = CANDIDATE_PROFILE.reg;
+                try {
+                    const authRes = await fetch(`${SCRIPT_URL}?action=authorizePayment&reg=${encodeURIComponent(reg)}&email=${encodeURIComponent(email)}&key=${TEST_KEY}`);
+                    const authStatus = await authRes.json();
+                    if(authStatus.status === "success") {
+                        document.getElementById('payment-lock-ui').style.display = 'none';
+                        document.getElementById('verified-footer').style.display = 'block';
+                        document.getElementById('proceed-final-btn').style.display = 'block';
+                    }
+                } catch (e) { alert("Payment received, sync failed. Contact Admin."); }
             },
-            onClose: function() {
-                alert('Transaction was not completed. Please pay to access your PIN.');
-            }
+            onClose: function() { alert('Transaction cancelled.'); }
         });
         handler.openIframe();
     }
@@ -788,64 +661,29 @@
     function goToFinal() {
         document.getElementById('result-page').style.display = 'none';
         document.getElementById('final-page').style.display = 'flex';
-        
         document.getElementById('final-cand-name').innerText = CANDIDATE_PROFILE.name;
         document.getElementById('final-cand-reg').innerText = CANDIDATE_PROFILE.reg;
-
         const pin = serverGeneratedPin || "####";
-        
-        const statusMsg = document.getElementById('auth-status-msg');
-        statusMsg.innerHTML = `
-            <div style="background: #e8f5e9; border: 2px solid #28a745; padding: 20px; border-radius: 12px; margin-top: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                <p style="margin: 0; color: #2e7d32; font-size: 0.85rem; font-weight: bold; text-transform: uppercase;">Result Access PIN</p>
-                <h2 id="pin-display" style="margin: 10px 0; color: #333; letter-spacing: 8px; font-size: 2.5rem;">${pin}</h2>
-                
-                <div style="display: flex; gap: 10px; justify-content: center; margin-top: 10px;">
-                    <button onclick="copyPinToClipboard('${pin}')" id="copy-btn" class="btn" style="background: #28a745; color: white; padding: 8px 15px; font-size: 0.8rem; border-radius: 5px;">
-                        📋 COPY PIN
-                    </button>
-                    <button onclick="downloadCredentials('${CANDIDATE_PROFILE.reg}', '${pin}')" class="btn" style="background: #003366; color: white; padding: 8px 15px; font-size: 0.8rem; border-radius: 5px;">
-                        💾 SAVE AS FILE
-                    </button>
+        document.getElementById('auth-status-msg').innerHTML = `
+            <div style="background: #e8f5e9; border: 2px solid #28a745; padding: 20px; border-radius: 12px; margin-top: 10px;">
+                <p style="color: #2e7d32; font-weight: bold;">RESULT ACCESS PIN</p>
+                <h2 style="letter-spacing: 8px; font-size: 2.5rem;">${pin}</h2>
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                    <button onclick="copyPinToClipboard('${pin}')" class="btn btn-primary" style="background:#28a745">📋 COPY</button>
+                    <button onclick="downloadCredentials('${CANDIDATE_PROFILE.reg}', '${pin}')" class="btn btn-primary">💾 SAVE</button>
                 </div>
-
-                <p style="margin-top: 15px; color: #666; font-size: 0.75rem; line-height: 1.4;">
-                    <strong>IMPORTANT:</strong> You need this PIN and your Reg No to access/print your result slip later.
-                </p>
-            </div>
-        `;
-        
-        copyPinToClipboard(pin, true);
+            </div>`;
     }
 
-    function copyPinToClipboard(pin, silent = false) {
-        navigator.clipboard.writeText(pin).then(() => {
-            if (!silent) {
-                const btn = document.getElementById('copy-btn');
-                btn.innerHTML = "✅ COPIED!";
-                setTimeout(() => btn.innerHTML = "📋 COPY PIN", 2000);
-            }
-        });
-    }
-
+    function copyPinToClipboard(pin) { navigator.clipboard.writeText(pin); alert("PIN Copied!"); }
     function downloadCredentials(reg, pin) {
-        const text = `RUBY SPRINGFIELD COLLEGE - CBT PORTAL\n\n` +
-                     `STUDENT: ${CANDIDATE_PROFILE.name}\n` +
-                     `REG NO: ${reg}\n` +
-                     `ACCESS PIN: ${pin}\n\n` +
-                     `Use these credentials to access and print your result slip.`;
-        
-        const blob = new Blob([text], { type: 'text/plain' });
-        const anchor = document.createElement('a');
-        anchor.download = `CBT_Credentials_${reg}.txt`;
-        anchor.href = window.URL.createObjectURL(blob);
-        anchor.click();
+        const blob = new Blob([`STUDENT: ${CANDIDATE_PROFILE.name}\nREG: ${reg}\nPIN: ${pin}`], { type: 'text/plain' });
+        const a = document.createElement('a'); a.download = `CBT_PIN_${reg}.txt`; a.href = URL.createObjectURL(blob); a.click();
     }
 
     dragElement(document.getElementById("calc-box"));
-    function dragElement(e){var n=0,t=0,o=0,l=0;function r(e){(e=e||window.event).preventDefault();o=e.clientX;l=e.clientY;document.onmouseup=u;document.onmousemove=i}function i(r){(r=r||window.event).preventDefault();n=o-r.clientX;t=l-r.clientY;o=r.clientX;l=r.clientY;e.style.top=e.offsetTop-t+"px";e.style.left=e.offsetLeft-n+"px"}function u(){document.onmouseup=null;document.onmousemove=null}document.getElementById(e.id+"-header")?document.getElementById(e.id+"-header").onmousedown=r:e.onmousedown=r}
-    let cV = "";
-    function tCalc() { const b = document.getElementById('calc-box'); b.style.display = (b.style.display==='block')?'none':'block'; }
+    function dragElement(e){var n=0,t=0,o=0,l=0;function r(e){(e=e||window.event).preventDefault();o=e.clientX;l=e.clientY;document.onmouseup=u;document.onmousemove=i}function i(r){(r=r||window.event).preventDefault();n=o-r.clientX;t=l-r.clientY;o=r.clientX;l=r.clientY;e.style.top=e.offsetTop-t+"px";e.style.left=e.offsetLeft-n+"px"}function u(){document.onmouseup=null;document.onmousemove=null}document.getElementById(e.id+"-header").onmousedown=r}
+    let cV = ""; function tCalc() { const b = document.getElementById('calc-box'); b.style.display = (b.style.display==='block')?'none':'block'; }
     function cIn(v) { cV += v; document.getElementById('calc-display').innerText = cV; }
     function cCl() { cV = ""; document.getElementById('calc-display').innerText = "0"; }
     function cEv() { try { cV = eval(cV).toString(); document.getElementById('calc-display').innerText = cV; } catch { cCl(); } }
