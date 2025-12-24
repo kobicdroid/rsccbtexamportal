@@ -291,7 +291,7 @@
 
 <script>
     // UPDATED APPSCRIPT URL - INSERTED AS REQUESTED
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz-0p8qI7EjmSNsIf6uGndFB6c3XJ9Ll2Fyh_N88egXke_INc3BNxmIUPIjjD5IoobiKQ/exec"; 
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz9qaRcL7SLYt6tU85Ll7KqdWU8CbBQfSrPos9V--qW4pQRiIbzOWXGY_QUr5UD5n-lxQ/exec"; 
     
     const TEST_KEY = "sk_test_505011f4e34f684ec320c4f48c3b07e6af073ef7";
     const PAYSTACK_PUB_KEY = "pk_test_4bdd157654a8181ee29e60360d61b73e09a0aea4"; 
@@ -529,9 +529,12 @@
             
             CANDIDATE_PROFILE = { name: authStatus.name.toUpperCase(), reg: reg, dept: dept };
             
-            let subs = [...baseDeptMap[dept]]; if(elective) subs.push(elective);
+            let subs = [...baseDeptMap[dept]]; 
+            if(elective && (dept === "HUMANITY" || dept === "COMMERCIAL")) subs.push(elective);
+            
             const recoveryData = checkRecovery(reg);
-            const promises = subs.map(s => 
+            
+            const promises = subs.filter(s => s && s.trim() !== "").map(s => 
                 fetch(`${SCRIPT_URL}?subject=${encodeURIComponent(s.trim())}&key=${TEST_KEY}`)
                 .then(res => res.json()).then(data => {
                     examData[s] = recoveryData ? data : shuffle([...data]);
@@ -550,7 +553,11 @@
             const listUI = document.getElementById('subject-list-ui'); listUI.innerHTML = "";
             subs.forEach((s) => { listUI.innerHTML += `<li class="subject-item"><span>${s}</span><span class="status-pill">LOADED ✓</span></li>`; });
             document.getElementById('start-btn').style.display = "block"; 
-        } catch(e) { document.getElementById('loading-overlay').style.display = 'none'; alert("Server Error."); }
+        } catch(e) { 
+            console.error("Login Error Details:", e);
+            document.getElementById('loading-overlay').style.display = 'none'; 
+            alert("Server Error: " + e.message); 
+        }
     }
 
     function startExam() { 
