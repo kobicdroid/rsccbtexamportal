@@ -291,9 +291,11 @@
 
 <script>
     // UPDATED APPSCRIPT URL
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwVfxeF9one07byWJ0OgMDvb_OYrgkLsG2N8jTOu5C3o7qf2fHTTUTKhKlr5n6G7wLDvQ/exec"; 
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwxnCr5VbcrWb5ySm5880lkpPGfd5CoMNI7J-HAYUQ0tjanWVtcvN6IVwAOWvqd_5CRQg/exec"; 
+    
+    // UPDATED TEST KEYS
     const TEST_KEY = "sk_test_505011f4e34f684ec320c4f48c3b07e6af073ef7";
-    const PAYSTACK_PUB_KEY = "Pk_test_4bdd157654a8181ee29e60360d61b73e09a0aea4"; 
+    const PAYSTACK_PUB_KEY = "pk_test_4bdd157654a8181ee29e60360d61b73e09a0aea4"; 
 
     let CANDIDATE_PROFILE = { name: "", reg: "", dept: "" };
     let tabSwitchCount = 0; 
@@ -669,6 +671,7 @@
                         throw new Error("Sync delay");
                     }
                 } catch (e) { 
+                    console.warn("Server sync delay, enabling manual proceed.");
                     alert("Verification pending, but payment was received. You may now proceed.");
                     document.getElementById('payment-lock-ui').style.display = 'none';
                     document.getElementById('proceed-final-btn').style.display = 'block';
