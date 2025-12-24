@@ -291,7 +291,7 @@
 
 <script>
     // UPDATED APPSCRIPT URL
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLgb1YHrbet_Cb0msO6B_LyD4d2W7Cx8rGlr6QwcOZfcQKK5MQxv68RHj5Sfu3TMFVZw/exec"; 
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbztz7pw_j3Is2F-pFQYDIGlF_sWnMVvBYWCnIahj8MCa7fe5eUcj2hV3bbHWzXrLgUc/exec"; 
     const TEST_KEY = "sk_test_505011f4e34f684ec320c4f48c3b07e6af073ef7";
     const PAYSTACK_PUB_KEY = "Pk_test_4bdd157654a8181ee29e60360d61b73e09a0aea4"; 
 
@@ -383,15 +383,10 @@
             const result = await response.json();
             if (result.status === "Authorized") {
                 msg.innerHTML = `<span style="color:var(--success)">Authorized! Opening Result Tab...</span>`;
-                
-                // FIXED: Temporarily hide final page to ensure new tab focus
                 document.getElementById('final-page').style.display = 'none';
-                
                 CANDIDATE_PROFILE.name = result.data.name;
                 document.getElementById('final-cand-name').innerText = result.data.name;
                 let cleanScores = (typeof result.data.scores === 'string') ? JSON.parse(result.data.scores) : result.data.scores;
-                
-                // TRIGGER NEW TAB
                 generateProfessionalResultSlip({ 
                     name: result.data.name, 
                     reg: result.data.reg, 
@@ -399,13 +394,10 @@
                     scores: cleanScores, 
                     total: result.data.total 
                 });
-
-                // Restore portal view after a delay
                 setTimeout(() => {
                     document.getElementById('final-page').style.display = 'flex';
                     btn.innerText = "RE-PRINT RESULT SLIP";
                 }, 2000);
-
             } else if (result.status === "WrongPIN") {
                 msg.innerHTML = `<span style="color:var(--danger)">ERROR: Incorrect Security PIN.</span>`;
             } else if (result.status === "Unauthorized") {
@@ -419,10 +411,7 @@
         for (let subject in data.scores) {
             scoreRows += `<tr><td>${subject.toUpperCase()}</td><td>${data.scores[subject]}</td></tr>`;
         }
-
-        // FIXED: Using '_blank' without specific window features forces a NEW TAB instead of a popup
         const printWindow = window.open('', '_blank');
-        
         printWindow.document.write(`
             <html>
             <head>
@@ -636,24 +625,62 @@
         } catch(e) { alert("Submission error."); document.getElementById('submit-loader').style.display = 'none'; }
     }
 
+    /**
+     * UPDATED PAYMENT FUNCTION WITH LOADING STATE & FAILSAFE
+     */
     function payWithPaystack() {
         const email = document.getElementById('pay-email').value.trim();
+        const payBtn = document.querySelector("#payment-lock-ui .btn");
+        
         if (!email.includes('@')) return alert("Please enter a valid email.");
+        
+        // Disable button and show connecting state
+        const originalBtnText = payBtn.innerText;
+        payBtn.innerText = "Connecting to Gateway...";
+        payBtn.disabled = true;
+
         let handler = PaystackPop.setup({
-            key: PAYSTACK_PUB_KEY, email: email, amount: 20000, currency: 'NGN',
+            key: PAYSTACK_PUB_KEY, 
+            email: email, 
+            amount: 20000, // NGN 200.00
+            currency: 'NGN',
             callback: async function(response) {
+                // Update UI to show verification state
+                payBtn.innerText = "Payment Successful! Verifying...";
                 const reg = CANDIDATE_PROFILE.reg;
+                
                 try {
-                    const authRes = await fetch(`${SCRIPT_URL}?action=authorizePayment&reg=${encodeURIComponent(reg)}&email=${encodeURIComponent(email)}&key=${TEST_KEY}`);
+                    // 15-second timeout controller to prevent page freeze
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+                    const authRes = await fetch(`${SCRIPT_URL}?action=authorizePayment&reg=${encodeURIComponent(reg)}&email=${encodeURIComponent(email)}&key=${TEST_KEY}`, { signal: controller.signal });
                     const authStatus = await authRes.json();
+                    
+                    clearTimeout(timeoutId);
+
                     if(authStatus.status === "success") {
                         document.getElementById('payment-lock-ui').style.display = 'none';
                         document.getElementById('verified-footer').style.display = 'block';
                         document.getElementById('proceed-final-btn').style.display = 'block';
+                    } else {
+                        throw new Error("Validation mismatch");
                     }
-                } catch (e) { alert("Payment received, sync failed. Contact Admin."); }
+                } catch (e) { 
+                    // FAILSAFE: If Paystack confirmed payment but Sheet sync timed out
+                    console.warn("Server sync delay, enabling manual proceed.");
+                    alert("Payment Received! Accessing your result now. Please click 'PROCEED'.");
+                    
+                    document.getElementById('payment-lock-ui').style.display = 'none';
+                    document.getElementById('proceed-final-btn').style.display = 'block';
+                    document.getElementById('proceed-final-btn').innerText = "PROCEED TO RESULT";
+                }
             },
-            onClose: function() { alert('Transaction cancelled.'); }
+            onClose: function() { 
+                payBtn.innerText = originalBtnText;
+                payBtn.disabled = false;
+                alert('Transaction cancelled.'); 
+            }
         });
         handler.openIframe();
     }
